@@ -148,6 +148,21 @@ public class Booking {
 		this.flightNumber = flightNumber;
 	}
 	
+	
+	
+	public Booking(String name, String emailId) {
+		super();
+		this.name = name;
+		this.emailId = emailId;
+	}
+	
+	
+	public Booking(String name, String emailId, String pnr) {
+		super();
+		this.name = name;
+		this.emailId = emailId;
+		this.pnr = pnr;
+	}
 	public Booking() {
 		
 	}

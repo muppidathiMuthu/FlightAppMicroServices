@@ -201,6 +201,13 @@ public class Flight {
 		this.ticketCost = ticketCost;
 	}
 	
+	
+	
+	public Flight(String fromPlace, String toPlace) {
+		super();
+		this.fromPlace = fromPlace;
+		this.toPlace = toPlace;
+	}
 	public Flight() {
 		
 	}
