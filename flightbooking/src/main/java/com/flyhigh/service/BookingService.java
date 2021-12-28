@@ -8,9 +8,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.flyhigh.model.Booking;
+import com.flyhigh.model.BookingDetails;
 import com.flyhigh.model.Flight;
 import com.flyhigh.model.Passenger;
 import com.flyhigh.repository.BookingRepository;
@@ -21,6 +23,9 @@ import com.flyhigh.util.FlightException;
 public class BookingService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
+	
+	@Autowired
+	private KafkaTemplate<String, BookingDetails> kafkaTemplate;
 	
 	@Autowired
 	FlightRepository flightRepository;
@@ -59,6 +64,7 @@ public class BookingService {
 			Set<Passenger> passengers = booking.getPassengers();
 			passengers.forEach(passenger -> passenger.setBooking(booking));
 			bookingRepository.save(booking);
+			kafkaTemplate.send("booking_details", new BookingDetails(booking.getEmailId(),booking.getPnr()));
 			return pnr;
 		}catch(Exception ex) {
 			logger.error("Error while bookFlight in Bookingservice {}", ex);
