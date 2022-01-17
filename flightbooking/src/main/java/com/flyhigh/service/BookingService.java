@@ -56,16 +56,18 @@ public class BookingService {
 	}
 
 	
-	public String bookFlight(Booking booking) throws Exception {
+	public Booking bookFlight(Booking booking) throws Exception {
 		logger.info("In bookFlight method of Booking service");
 		try {
 			String pnr = generatePNR();
 			booking.setPnr(pnr);
-			Set<Passenger> passengers = booking.getPassengers();
-			passengers.forEach(passenger -> passenger.setBooking(booking));
+			/*
+			 * Set<Passenger> passengers = booking.getPassengers();
+			 * passengers.forEach(passenger -> passenger.setBooking(booking));
+			 */
 			bookingRepository.save(booking);
-			kafkaTemplate.send("booking_details", new BookingDetails(booking.getEmailId(),booking.getPnr()));
-			return pnr;
+			//kafkaTemplate.send("booking_details", new BookingDetails(booking.getEmailId(),booking.getPnr()));
+			return booking;
 		}catch(Exception ex) {
 			logger.error("Error while bookFlight in Bookingservice {}", ex);
 			throw ex;
@@ -77,7 +79,7 @@ public class BookingService {
 		try{
 			int id = bookingRepository.getMaxId()+1;
 			String pnr = String.format("%03d", id);
-			return "#"+pnr;
+			return pnr;
 		}catch(Exception ex) {
 			logger.error("Error while generatePNR in Bookingservice {}", ex);
 			throw ex;
@@ -97,10 +99,12 @@ public class BookingService {
 		
 	}
 	
-	public Booking getTicketByPnr(String pnr) throws Exception {
+	public List<Booking> getTicketByPnr(String pnr) throws Exception {
 		logger.info("In getTicketByPnr method of Booking service");
 		try {
-			return bookingRepository.findByPnrAndIsCancelledFalse(pnr);	
+			List<Booking> bookingList = new ArrayList<Booking>();
+			bookingList.add(bookingRepository.findByPnrAndIsCancelledFalse(pnr));
+			return bookingList;	
 		}catch(Exception ex) {
 			logger.error("Error while getTicketByPnr in Bookingservice {}", ex);
 			throw ex;
@@ -111,6 +115,7 @@ public class BookingService {
 	public Long cancelTicketByPnr(String pnr) throws Exception {
 		logger.info("In cancelTicketByPnr method of Booking service");
 		try {
+			System.out.println("The PNR vaue here is ------ "+pnr);
 			Booking	booking = bookingRepository.findByPnrAndIsCancelledFalse(pnr);
 			booking.setIsCancelled(true);
 			return bookingRepository.save(booking).getId();

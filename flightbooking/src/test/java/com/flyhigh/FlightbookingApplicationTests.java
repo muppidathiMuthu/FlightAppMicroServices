@@ -116,7 +116,7 @@ class FlightbookingApplicationTests {
 		
 		Mockito.when(bookingRepository.save(new Booking())).thenReturn(booking);
 		try {
-			String bookingPnr = bookingService.bookFlight(new Booking());
+			String bookingPnr = bookingService.bookFlight(new Booking()).getPnr();
 			
 			Assertions.assertNotNull(bookingPnr);
 

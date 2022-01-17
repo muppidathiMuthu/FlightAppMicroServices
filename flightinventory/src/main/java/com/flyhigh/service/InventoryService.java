@@ -1,5 +1,6 @@
 package com.flyhigh.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -54,6 +55,16 @@ public class InventoryService {
 			logger.error("Error while addFlight in InventoryService {}", ex);
 			throw ex;
 		}
+	}
+
+	public List<Flight> getAllFlights() {
+		// TODO Auto-generated method stub
+		return flightReposiory.findAll();
+	}
+
+	public List<Airline> getAllAirline() {
+		// TODO Auto-generated method stub
+		return airlineRepository.findByIsBlockedFalse();
 	}
 
 }

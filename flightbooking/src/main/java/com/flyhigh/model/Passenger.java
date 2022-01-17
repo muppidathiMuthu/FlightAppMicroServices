@@ -23,12 +23,13 @@ public class Passenger {
 	int age;
 	int seatNo;
 
-	
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "booking_id") 
-	 @JsonIgnore
-	 private Booking booking;
-	 
+	/*
+	 * @ManyToOne(fetch = FetchType.LAZY)
+	 * 
+	 * @JoinColumn(name = "booking_id")
+	 * 
+	 * @JsonIgnore private Booking booking;
+	 */
 
 	/**
 	 * @return the id
@@ -103,17 +104,14 @@ public class Passenger {
 	/**
 	 * @return the booking
 	 */
-	public Booking getBooking() {
-		return booking;
-	}
-
-	/**
-	 * @param booking the booking to set
-	 */
-	public void setBooking(Booking booking) {
-		this.booking = booking;
-	}
-
+	/*
+	 * public Booking getBooking() { return booking; }
+	 * 
+	 *//**
+		 * @param booking the booking to set
+		 *//*
+			 * public void setBooking(Booking booking) { this.booking = booking; }
+			 */
 	public Passenger(Long id, String name, String gender, int age, int seatNo, Booking booking) {
 		super();
 		this.id = id;
@@ -121,23 +119,21 @@ public class Passenger {
 		this.gender = gender;
 		this.age = age;
 		this.seatNo = seatNo;
-		this.booking = booking;
+		//this.booking = booking;
 	}
 
 	/**
 	 * @return the booking
 	 */
-	
+
 	public Passenger() {
-		
+
 	}
 
 	@Override
 	public String toString() {
 		return "Passenger [id=" + id + ", name=" + name + ", gender=" + gender + ", age=" + age + ", seatNo=" + seatNo
-				+ ", booking=" + booking + "]";
+				+ "]";
 	}
-	
-	
 
 }
